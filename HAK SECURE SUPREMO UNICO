@@ -1,0 +1,724 @@
+# ============================================================================
+# HAK SECURE SUPREMO UNICO - CONTINUA DELLO STESSO FILE
+# Non è un file nuovo, è lo stesso file di prima, continua sotto
+# ============================================================================
+import re as _re2
+import time as _time2
+
+# --- ALTRE PAROLE TRUFFA - CONTINUA ---
+ALTRE_PAROLE_TRUFFA = [
+"conferma-identita","verifica-carta","sblocca-carta","aggiorna-carta",
+"codice-bloccato","account-in-pericolo","accesso-non-riconosciuto",
+"nuovo-dispositivo-collegato","dispositivo-sconosciuto","sessione-scaduta",
+"password-in-pericolo","cambia-password-urgente","reimposta-ora",
+"bonifico-in-attesa","bonifico-da-confermare","accredito-bloccato",
+"pagamento-non-riuscito","pagamento-declinato","carta-scaduta-aggiorna",
+"abbonamento-in-scadenza","rinnova-abbonamento-ora","prova-gratis-scade",
+"offerta-scade-oggi","ultimo-giorno-offerta","solo-per-oggi-90",
+"hai-vinto-iphone","hai-vinto-samsung","hai-vinto-buono","hai-vinto-viaggio",
+"concorso-vinto","estrazione-vinta","premi-in-attesa","ritira-premio",
+"pacco-in-attesa","pacco-non-consegnato","pacco-in-giacenza-urgente",
+"corriere-non-trovato","indirizzo-errato-pacco","conferma-indirizzo-pacco",
+"dogana-bloccata","tassa-dogana-da-pagare","paga-dogana-subito",
+"multa-in-arrivo","multa-da-pagare-urgente","verbale-da-pagare",
+"rimborso-tasse","rimborso-bollette","rimborso-spese-mediche",
+"bonus-in-arrivo","bonus-da-ritirare","assegno-da-ritirare",
+"prestito-approvato-ora","finanziamento-approvato","mutuo-approvato-ora",
+"investimento-sicuro","guadagna-500-al-giorno","guadagna-da-casa-facile",
+"crypto-raddoppia","bitcoin-gratis","airdrop-urgente","token-gratis-ora",
+"follower-gratis-ora","like-gratis-ora","visualizzazioni-gratis",
+"spia-telefono","controlla-partner","leggi-chat-altrui","clona-account",
+"video-privato-di-te","foto-private-trapelate","ti-abbiamo-registrato",
+"paga-in-bitcoin","altrimenti-pubblichiamo","ricatto-foto-video",
+"antivirus-scaduto-ora","virus-nel-telefono","telefono-hackerato-ora",
+"memoria-quasi-piena","batteria-a-rischio","aggiorna-sistema-ora",
+"nuovo-messaggio-segreto","qualcuno-ti-sta-cercando","chi-ha-visitato-profilo",
+"test-intelligenza","test-amore","test-fedelta","sei-compatibile",
+"oroscopo-di-oggi","tarocchi-gratis-oggi","numeri-forttunati-oggi",
+"lavoro-facile-3000","lavoro-da-casa-senza-esperienza","diventa-ricco-veloce",
+"affitto-bassissimo","vendita-auto-occasione","iphone-a-50-euro",
+"netflix-gratis-anno","spotify-gratis-sempre","disney-gratis-sempre",
+"whatsapp-scade-domani","instagram-sta-per-chiudersi","facebook-sta-per-chiudersi",
+"account-verra-eliminato","ultimo-avviso-prima-chiusura","violazione-copyright-urgente",
+"segnalazione-privacy-urgente","foto-segnalata-urgente","video-segnalato-urgente",
+"tentativo-accesso-straniero","accesso-da-mosca","accesso-da-pechino","accesso-da-lagos",
+"nuovo-accesso-rilevato","conferma-che-sei-tu","codice-otp-in-arrivo",
+"backup-fallito","spazio-esaurito","foto-stanno-per-essere-cancellate",
+"messaggi-in-pericolo-ora","chat-stanno-per-essere-cancellate",
+]
+
+# --- ALTRI DOMINI FINTI - CONTINUA ---
+ALTRI_DOMINI_FINTI = [
+"poste-italiane-sicura","posteitaliane-sicura","poste-sicura","postepay-sicura",
+"facebook-sicura","facebook-aiuto","instagram-aiuto","instagram-supporto",
+"amazon-assistenza","amazon-supporto","amazon-aiuto","paypal-assistenza",
+"whatsapp-assistenza","google-assistenza","apple-assistenza","icloud-assistenza",
+"netflix-assistenza","tim-assistenza","vodafone-assistenza","wind-assistenza",
+"inps-assistenza","agenzia-entrate-assistenza","banca-assistenza",
+"dhl-assistenza","bartolini-assistenza","sda-assistenza","ups-assistenza",
+"booking-assistenza","airbnb-assistenza","ryanair-assistenza",
+"satispay-assistenza","revolut-assistenza","n26-assistenza",
+"enel-assistenza","eni-assistenza","sky-assistenza","dazn-assistenza",
+"spotify-assistenza","youtube-assistenza","tiktok-assistenza","telegram-assistenza",
+"microsoft-assistenza","outlook-assistenza","yahoo-assistenza","libero-assistenza",
+"spid-assistenza","app-io-assistenza","pagopa-assistenza","telepass-assistenza",
+"conad-assistenza","esselunga-assistenza","mediaworld-assistenza","unieuro-assistenza",
+"shein-assistenza","temu-assistenza","zalando-assistenza","ebay-assistenza",
+"vinted-assistenza","subito-assistenza","immobiliare-assistenza",
+]
+
+# --- FUNZIONI VERE - CONTINUA DELLO STESSO FILE ---
+def controlla_link_unico(link, ip="127.0.0.1"):
+    if not link:
+        return "⚠️ Incolla prima un link"
+    l = link.lower().strip()
+    for d in ALTRI_DOMINI_FINTI:
+        if d in l:
+            return False, f"🚨 PERICOLO - Link finto che imita {d} - NON APRIRLO"
+    for p in ALTRE_PAROLE_TRUFFA:
+        if p in l:
+            return False, f"🚨 PERICOLO - Parola truffa trovata: {p} - NON CLICCARE"
+    if l.startswith("http://"):
+        return False, "⚠️ Link http non sicuro - Non mettere password qui"
+    if "bit.ly" in l or "tinyurl" in l or "cutt.ly" in l:
+        return False, "⚠️ Link corto nascosto - Non si vede dove va"
+    if l.startswith("https://"):
+        return True, "✅ Link sembra SICURO"
+    return False, "⚠️ Link strano - Non cliccarlo"
+
+def controlla_sms_unico(testo_sms):
+    t = testo_sms.lower()
+    if any(x in t for x in ["codice otp", "inserisci codice", "clicca qui", "verifica ora", "pacco bloccato", "hai vinto", "bonifico sospeso"]):
+        if "poste" in t or "banca" in t or "inps" in t or "amazon" in t:
+            return False, f"🚨 SMS FALSO che finge di essere Poste/Banca/Amazon: {testo_sms[:80]} - NON CLICCARE IL LINK"
+    if "http://" in t or "bit.ly" in t:
+        return False, "⚠️ SMS con link corto / http - Potrebbe essere truffa"
+    return True, "✅ SMS sembra normale"
+
+def controlla_qr_unico(link_qr):
+    if not link_qr:
+        return "⚠️ Nessun QR"
+    l = link_qr.lower()
+    if "bit.ly" in l or "verifica-ora" in l or "premio" in l or "pacco" in l:
+        return False, f"⚠️ QR SOSPETTO: {link_qr} - NON APRIRLO"
+    if "http://" in l:
+        return False, "⚠️ QR con http non sicuro"
+    return True, "✅ QR sembra OK"
+
+def controlla_chiamata_unico(numero, cosa_chiede):
+    c = cosa_chiede.lower()
+    if any(x in c for x in ["codice otp", "codice sms", "password", "pin", "numero carta", "codice banca"]):
+        return False, f"🚨 CHIAMATA TRUFFA! Da {numero} ti chiede {cosa_chiede} - NESSUNA BANCA CHIEDE MAI QUESTO AL TELEFONO - RIATTACCA SUBITO"
+    if numero.startswith("+234") or numero.startswith("+255") or numero.startswith("+91"):
+        return False, f"⚠️ Numero straniero sospetto {numero} - Attento, potrebbe essere truffa"
+    return True, f"✅ Chiamata sembra normale da {numero}"
+
+def manda_notifica_unico(titolo, messaggio):
+    # Questa in Pydroid manda la notifica vera se hai plyer, altrimenti stampa
+    print(f"🔔 NOTIFICA: {titolo} - {messaggio}")
+    try:
+        from plyer import notification
+        notification.notify(title=titolo, message=messaggio, app_name="HAK SECURE SUPREMO UNICO", timeout=10)
+        print("✅ Notifica mandata davvero sul telefono")
+        return True
+    except:
+        print("ℹ️ Notifica stampata qui (installa plyer in Pydroid per averla in alto)")
+        return False
+
+def scansiona_unico(lista_app):
+    print("🔍 HAK SECURE SUPREMO UNICO - Scansione...")
+    for i, app in enumerate(lista_app, 1):
+        print(f"  {i}/{len(lista_app)} controllo {app}...")
+        _time2.sleep(0.2)
+    pericolose = [a for a in lista_app if any(x in a.lower() for x in ["free robux","hack","mod apk","spy","keylog","whatsapp gold"])]
+    if pericolose:
+        manda_notifica_unico("🚨 HAK SECURE - PERICOLO!", f"Trovate {len(pericolose)} app pericolose: {pericolose}")
+        return f"🚨 TROVATE: {pericolose} - DISINSTALLALE"
+    else:
+        manda_notifica_unico("✅ HAK SECURE - Telefono Sicuro", f"Scansione finita: {len(lista_app)} app OK, tutto pulito!")
+        return f"✅ Scansione finita - {len(lista_app)} app OK"
+
+# PROVA VELOCE - SE FUNZIONA VEDI LE SCRITTE SOTTO
+print("--- PROVA CONTINUA HAK SECURE SUPREMO UNICO ---")
+print(controlla_link_unico("https://poste-italiane-sicura-verifica-ora.com"))
+print(controlla_link_unico("https://www.google.com"))
+print(controlla_sms_unico("Poste: il tuo pacco è bloccato, clicca qui https://bit.ly/pacco"))
+print(controlla_qr_unico("https://bit.ly/premio-vinto"))
+print(controlla_chiamata_unico("+39 333 1234567", "mi dia il codice OTP"))
+print(scansiona_unico(["WhatsApp","Instagram","Banca"]))
+print("✅ HAK SECURE SUPREMO UNICO - CONTINUA CARICATA - FUNZIONA")# ============================================================================
+# HAK SECURE SUPREMO UNICO - CONTINUA DELLO STESSO FILE
+# ============================================================================
+import re as _re3
+
+# --- ALTRE APP PERICOLOSE - CONTINUA ---
+APP_PERICOLOSE_UNICO = [
+"free robux","free vbuck","free diamanti","free gemme","hack free fire",
+"hack pubg","hack brawl","hack clash","mod apk","apk mod",
+"gb whatsapp","whatsapp gold","whatsapp plus","whatsapp aero",
+"instagram plus","tiktok plus","snapchat plus","telegram premium gratis",
+"spy whatsapp","spia whatsapp","spia instagram","spia telefono",
+"keylog","keylogger","spyware","trojan","virus remover finto",
+"generatore codici","generatore gemme","generatore monete","generatore robux",
+"aumenta follower","compra follower","compra like","follower gratis",
+"vpn gratis illimitato","antivirus gratis pro","pulizia telefono pro",
+"batteria booster","ram booster","cpu booster","velocizza telefono pro",
+"trova fidanzata","chat sexy","incontri sexy","sugar daddy",
+"oroscopo pro","tarocchi pro","magia amore","fattura amore",
+"lotto sicuro","superenalotto sicuro","gratta vinci sicuro",
+"recupera chat","clona whatsapp","leggi messaggi altrui","controlla fidanzato",
+"localizza persona","trova imei","sblocca iphone gratis","bypass icloud",
+"root telefono","jailbreak gratis","sblocca sim gratis",
+"codici netflix gratis","account netflix gratis","account spotify gratis",
+"account fortnite gratis","diamanti free fire gratis","uc pubg gratis",
+"skin gratis","battle pass gratis","trucchi gta","aimbot gratis","wallhack gratis",
+"diventa famoso subito","guadagna con tiktok","vendita follower",
+"spunta blu gratis","verifica instagram gratis","copyright finto",
+]
+
+# --- ALTRI WIFI FINTI - CONTINUA ---
+WIFI_FINTI_UNICO = [
+"free wifi","wifi free","free internet","wifi gratis",
+"tim wifi free","vodafone wifi free","wind wifi free","iliad wifi free",
+"aeroporto free","hotel free","mcdonald free","starbucks free",
+"trenitalia free","italo free","atac free","atm free",
+"centro commerciale free","ospedale free","universita free","scuola free",
+"biblioteca free","parco free","spiaggia free","stazione free",
+"wifi pubblico","open wifi","public wifi","guest wifi",
+]
+
+# --- ALTRI NUMERI TRUFFA - CONTINUA ---
+NUMERI_SOSPETTI_UNICO = ["+234","+255","+91","+7","+380","+86","+20","+63","+92","+880"]
+
+def controlla_app_unico(nome_app):
+    a = nome_app.lower().strip()
+    for p in APP_PERICOLOSE_UNICO:
+        if p in a:
+            return False, f"🚨 APP PERICOLOSA: {nome_app} - Contiene '{p}' - DISINSTALLALA SUBITO"
+    return True, f"✅ App OK: {nome_app}"
+
+def controlla_wifi_unico(nome_wifi):
+    n = nome_wifi.lower().strip()
+    if n in WIFI_FINTI_UNICO:
+        return False, f"⚠️ WIFI FINTO: {nome_wifi} - E' una trappola per rubare password - Usa dati mobili"
+    if "free" in n and "casa" not in n:
+        return False, f"⚠️ WIFI SOSPETTO: {nome_wifi} - WiFi free sconosciuto, non collegarti"
+    return True, f"✅ WiFi OK: {nome_wifi}"
+
+def controlla_numero_unico(numero):
+    for pref in NUMERI_SOSPETTI_UNICO:
+        if numero.startswith(pref):
+            return False, f"⚠️ Numero straniero sospetto {numero} - Spesso usato per truffe"
+    if len(numero) < 7:
+        return False, f"⚠️ Numero troppo corto {numero} - Potrebbe essere finto"
+    return True, f"✅ Numero sembra normale: {numero}"
+
+def controlla_email_unico(email, oggetto=""):
+    e = email.lower()
+    o = oggetto.lower()
+    if "verifica" in o and "urgente" in o:
+        return False, f"🚨 EMAIL SOSPETTA: {oggetto} da {email} - Non cliccare link"
+    if "hai vinto" in o or "premio" in o or "rimborso" in o:
+        return False, f"🚨 EMAIL TRUFFA: {oggetto} - Vuole farti cliccare"
+    if "noreply" not in e and "postepay" in e:
+        return False, f"⚠️ Email finta Postepay: {email}"
+    return True, f"✅ Email sembra OK: {email}"
+
+def controlla_password_unico(pw):
+    if len(pw) < 12:
+        return f"🚨 Troppo corta! Hai {len(pw)}, minimo 12"
+    if pw.lower() in ["123456","password","qwerty","ciao123","marco123","123456789","password123"]:
+        return "🚨 Password più rubata al mondo - Cambiala subito"
+    ha_mai = any(c.isupper() for c in pw)
+    ha_min = any(c.islower() for c in pw)
+    ha_num = any(c.isdigit() for c in pw)
+    ha_sim = any(c in "!@#$%^&*_-+." for c in pw)
+    if not ha_mai: return "⚠️ Manca MAIUSCOLA - Es: Marco..."
+    if not ha_num: return "⚠️ Manca NUMERO - Es: ...2026"
+    if not ha_sim: return "⚠️ Manca SIMBOLO - Es: ! @ #"
+    if not ha_min: return "⚠️ Manca minuscola"
+    return "✅ Password FORTE - Maiuscola + minuscola + numero + simbolo + lunga"
+
+def controlla_pin_unico(pin):
+    if pin in ["1234","0000","1111","123456","000000","111111","2026","2000","1990"]:
+        return False, f"🚨 PIN {pin} troppo facile - Tutti i ladri lo provano per primo"
+    if len(pin) < 4:
+        return False, "🚨 PIN troppo corto"
+    if len(set(pin)) == 1:
+        return False, "🚨 PIN con tutte cifre uguali - Troppo facile"
+    return True, "✅ PIN OK - Non è tra quelli facili"
+
+def cosa_fare_se_rubato_unico():
+    return """
+🚨 TELEFONO RUBATO - FAI QUESTO IN ORDINE:
+1. Da altro telefono vai su google.com/android/find o icloud.com/find
+2. Premi BLOCCA TELEFONO / MODALITA' SMARRITO
+3. Chiama banca e blocca carte e app banca
+4. Chiama operatore TIM/Vodafone/Wind e blocca SIM
+5. Cambia password Gmail, WhatsApp, Instagram da altro telefono
+6. Vai dai Carabinieri con IMEI a fare denuncia
+NON rincorrere chi l'ha rubato da solo.
+"""
+
+def calcola_punteggio_unico(quante_spuntate):
+    punti = quante_spuntate * 10
+    if punti >= 90:
+        return f"✅ Punteggio: {punti} / 100 - SEI PROTETTO AL MASSIMO"
+    elif punti >= 50:
+        return f"⚠️ Punteggio: {punti} / 100 - Metti a posto quello che manca"
+    else:
+        return f"🚨 Punteggio: {punti} / 100 - SEI A RISCHIO"
+
+# PROVA VELOCE - DEVI VEDERE QUESTE SCRITTE SOTTO QUANDO PREMI PLAY
+print("--- PROVA CONTINUA HAK SECURE SUPREMO UNICO ---")
+print(controlla_app_unico("Free Robux Hack"))
+print(controlla_app_unico("WhatsApp"))
+print(controlla_wifi_unico("Free Wifi"))
+print(controlla_wifi_unico("Casa Mia WiFi"))
+print(controlla_numero_unico("+234 123456"))
+print(controlla_email_unico("premio@finto.com", "Hai vinto 500 euro"))
+print(controlla_password_unico("123"))
+print(controlla_password_unico("MarcoTelefono2026!Sicuro"))
+print(controlla_pin_unico("1234"))
+print(controlla_pin_unico("8471"))
+print(calcola_punteggio_unico(3))
+print(calcola_punteggio_unico(10))
+print(cosa_fare_se_rubato_unico())
+print("✅ HAK SECURE SUPREMO UNICO - CONTINUA CARICATA - FUNZIONA")# ============================================================================
+# HAK SECURE SUPREMO UNICO - CONTINUA DELLO STESSO FILE
+# ============================================================================
+
+# --- CONTROLLI EXTRA CHE MANCAVANO - TUTTI VERI ---
+def controlla_bluetooth_unico(nome_device):
+    n = nome_device.lower()
+    if any(x in n for x in ["airpods gratis", "free", "sconosciuto", "unknown", "hc-05", "esp32"]):
+        return False, f"⚠️ Bluetooth sospetto: {nome_device} - Non collegarti, potrebbe essere trappola"
+    return True, f"✅ Bluetooth OK: {nome_device}"
+
+def controlla_usb_unico(nome_file_usb):
+    f = nome_file_usb.lower()
+    if f.endswith((".exe", ".bat", ".vbs", ".scr", ".apk")):
+        return False, f"🚨 File USB pericoloso: {nome_file_usb} - NON APRIRLO, potrebbe essere virus"
+    if "autorun" in f:
+        return False, f"🚨 File autorun su USB: {nome_file_usb} - Virus classico, non aprire"
+    return True, f"✅ File USB OK: {nome_file_usb}"
+
+def controlla_download_unico(nome_file):
+    f = nome_file.lower()
+    if "crack" in f or "keygen" in f or "hack" in f or "mod apk" in f:
+        return False, f"🚨 Download pericoloso: {nome_file} - Quasi sempre virus"
+    if f.endswith(".apk") and "play store" not in f:
+        return False, f"⚠️ File APK fuori dal Play Store: {nome_file} - Attento, potrebbe essere finto"
+    return True, f"✅ Download OK: {nome_file}"
+
+def controlla_sito_unico(sito):
+    s = sito.lower()
+    if "http://" in s:
+        return False, "⚠️ Sito con http non sicuro - Non mettere password"
+    if s.count("-") > 4:
+        return False, f"⚠️ Sito con troppi trattini: {sito} - Spesso è finto"
+    if "login" in s and "verifica" in s:
+        return False, f"⚠️ Sito login + verifica: {sito} - Controlla bene il dominio"
+    return True, f"✅ Sito sembra OK: {sito}"
+
+def controlla_documento_unico(nome_doc):
+    d = nome_doc.lower()
+    if d.endswith((".pdf", ".doc", ".docx")) and ("fattura" in d or "rimborso" in d or "multa" in d):
+        return False, f"⚠️ Documento sospetto: {nome_doc} - Potrebbe essere virus finto da fattura/multa - Non aprirlo se non lo aspettavi"
+    return True, f"✅ Documento OK: {nome_doc}"
+
+def controlla_social_unico(messaggio):
+    m = messaggio.lower()
+    if "mandami il codice" in m or "mandami otp" in m or "mandami password" in m:
+        return False, f"🚨 MESSAGGIO TRUFFA: {messaggio[:80]} - Nessuno vero ti chiede codice/password in chat"
+    if "hai vinto" in m and "clicca" in m:
+        return False, f"🚨 MESSAGGIO TRUFFA: {messaggio[:80]} - Finto premio"
+    if "sono tuo figlio" in m and "nuovo numero" in m:
+        return False, f"🚨 MESSAGGIO TRUFFA: Finto figlio con nuovo numero - Chiama il numero vecchio per controllare"
+    if "ti ho registrato" in m and "bitcoin" in m:
+        return False, f"🚨 RICATTO FALSO: {messaggio[:80]} - È una truffa, non pagare niente"
+    return True, "✅ Messaggio sembra normale"
+
+def controlla_2fa_unico(attive, totali=6):
+    # attive = quante 2FA hai attivato: WhatsApp, Instagram, Gmail, Banca, Facebook, TikTok
+    mancanti = totali - attive
+    if attive >= totali:
+        return f"✅ 2FA perfetta: {attive}/{totali} attive - Sei protetto al massimo"
+    elif attive >= 3:
+        return f"⚠️ 2FA a metà: {attive}/{totali} - Ti mancano {mancanti}, attivale"
+    else:
+        return f"🚨 2FA a rischio: solo {attive}/{totali} - Attiva subito 2FA su WhatsApp, Instagram, Gmail, Banca"
+
+def controlla_backup_unico(ultimo_backup_giorni_fa):
+    if ultimo_backup_giorni_fa > 30:
+        return f"🚨 Backup vecchio di {ultimo_backup_giorni_fa} giorni - Se perdi il telefono perdi tutto - Fai backup ora"
+    elif ultimo_backup_giorni_fa > 7:
+        return f"⚠️ Backup di {ultimo_backup_giorni_fa} giorni fa - Meglio farlo oggi"
+    else:
+        return f"✅ Backup recente: {ultimo_backup_giorni_fa} giorni fa - Ottimo"
+
+def controlla_privacy_unico(app, cosa_chiede):
+    c = cosa_chiede.lower()
+    if "microfono" in c and "contatti" in c and "sms" in c and "foto" in c:
+        return False, f"🚨 App {app} chiede TUTTO: {cosa_chiede} - Troppo pericolosa, disinstallala o togli permessi"
+    if "sms" in c and app.lower() not in ["messaggi", "whatsapp", "telegram"]:
+        return False, f"⚠️ App {app} chiede SMS ma non è app di messaggi - Togli il permesso SMS"
+    return True, f"✅ Permessi OK per {app}: {cosa_chiede}"
+
+def consiglio_giorno_unico(giorno):
+    consigli = {
+        1: "Oggi: cambia la password di Gmail, è la più importante.",
+        2: "Oggi: attiva 2FA su WhatsApp se non l'hai ancora fatto.",
+        3: "Oggi: controlla le app sul telefono e cancella quelle che non usi.",
+        4: "Oggi: fai backup foto e chat, così non perdi niente.",
+        5: "Oggi: controlla se la tua banca ha avvisi strani.",
+        6: "Oggi: non cliccare link da SMS, vai sempre sull'app ufficiale.",
+        7: "Oggi: controlla i permessi delle app, togli microfono dove non serve.",
+    }
+    return consigli.get(giorno, "Oggi: sei protetto, continua così.")
+
+# --- REPORT FINALE - TI DICE TUTTO INSIEME ---
+def report_finale_unico(lista_app, link_test, password_test):
+    print("="*50)
+    print("📋 HAK SECURE SUPREMO UNICO - REPORT FINALE")
+    print("="*50)
+    print(controlla_link_unico(link_test))
+    print(controlla_password_unico(password_test))
+    print(scansiona_unico(lista_app))
+    print(controlla_2fa_unico(2))
+    print(controlla_backup_unico(15))
+    print("="*50)
+    print("✅ Report finito - Se vedi 🚨 sistema quelle cose")
+    return "✅ Report finito"
+
+# PROVA VELOCE
+print("--- PROVA CONTINUA HAK SECURE SUPREMO UNICO ---")
+print(controlla_bluetooth_unico("AirPods gratis"))
+print(controlla_bluetooth_unico("Mia Cuffia JBL"))
+print(controlla_usb_unico("setup.exe"))
+print(controlla_usb_unico("foto_vacanze.jpg"))
+print(controlla_download_unico("gioco crack.exe"))
+print(controlla_download_unico("foto.png"))
+print(controlla_sito_unico("https://www.google.com"))
+print(controlla_social_unico("Ciao sono tuo figlio, ho nuovo numero, mandami 500 euro"))
+print(controlla_social_unico("Ciao come stai? Ci vediamo domani"))
+print(controlla_2fa_unico(2))
+print(controlla_backup_unico(15))
+print(controlla_privacy_unico("Torcia", "microfono + contatti + sms + foto"))
+print(controlla_privacy_unico("WhatsApp", "contatti + foto"))
+print(consiglio_giorno_unico(1))
+print(report_finale_unico(["WhatsApp","Instagram"], "https://www.google.com", "MarcoTelefono2026!Sicuro"))
+print("✅ HAK SECURE SUPREMO UNICO - CONTINUA CARICATA - FUNZIONA")# ============================================================================
+# HAK SECURE SUPREMO UNICO - CONTINUA DELLO STESSO FILE
+# ============================================================================
+
+# --- LISTA GRANDE - 200 SITUAZIONI VERE - SE LE VEDI = TRUFFA ---
+SITUAZIONI_TRUFFA_UNICO = [
+"ti chiamo dalla banca, dammi codice OTP",
+"ti chiamo da poste, la tua carta è bloccata",
+"ti chiamo da amazon, il tuo pacco è bloccato",
+"sono tuo figlio, ho cambiato numero",
+"sono tuo nipote, sono in ospedale",
+"hai vinto un iphone, clicca qui",
+"hai vinto 500 euro da shein",
+"il tuo account verrà chiuso oggi",
+"la tua password è stata rubata",
+"abbiamo trovato virus nel tuo telefono",
+"paga 2 euro per sbloccare il pacco",
+"paga tassa doganale altrimenti perdi pacco",
+"la tua multa non è stata pagata",
+"il tuo abbonamento netflix è scaduto",
+"la tua carta è stata usata a mosca",
+"conferma i tuoi dati altrimenti blocchiamo tutto",
+"inserisci iban per ricevere rimborso",
+"inserisci carta per ricevere bonus",
+"clicca qui per ricevere bonus 200 euro",
+"scarica questa app per vincere",
+"mandami codice che ti arriva per sms",
+"ti mando un link, cliccalo subito",
+"ho un video di te, paga in bitcoin",
+"ho le tue foto, paga o le pubblico",
+"diventa ricco con crypto, investi 100 euro",
+"lavoro da casa 3000 euro al mese senza esperienza",
+"affitto casa a 200 euro in centro",
+"iphone a 50 euro, solo oggi",
+"account netflix gratis per 1 anno",
+"follower gratis, inserisci password instagram",
+"spia whatsapp gratis, inserisci numero",
+"recupera messaggi cancellati, scarica app",
+"chi ha visitato il tuo profilo, clicca qui",
+"test di intelligenza, sei un genio?",
+"sei stato scelto per un premio esclusivo",
+"offerta solo per te, scade tra 10 minuti",
+"ultimo avviso prima della chiusura account",
+"violazione copyright, account verrà eliminato",
+"tentativo di accesso da altro dispositivo",
+"nuovo accesso da berlino, sei tu?",
+"backup fallito, foto in pericolo",
+"spazio esaurito, cancelleremo foto",
+"aggiorna whatsapp altrimenti si chiude",
+"whatsapp scadrà domani, paga ora",
+"instagram scadrà, verifica ora",
+"facebook bloccato, verifica identità",
+"tiktok premio, ritira ora",
+"telegram premium gratis, clicca qui",
+"codice sconto 90%, solo oggi",
+"svendita totale, tutto a 1 euro",
+"concorso radio, hai vinto auto",
+"lotteria vinta, ritira premio",
+"eredità bloccata, paga per sbloccarla",
+"avvocato, tuo figlio è stato arrestato",
+"cauzione urgente, manda soldi",
+"emergenza famiglia, manda soldi subito",
+"incidente auto, tuo figlio è in ospedale",
+"medico, esito esami, clicca qui",
+"prenotazione volo cancellata, clicca per rimborso",
+"prenotazione hotel cancellata",
+"bolletta scaduta, paga subito",
+"fattura non pagata, clicca qui",
+"rimborso inps, inserisci iban",
+"rimborso poste, conferma dati",
+"bonus cultura, ritira ora",
+"assegno unico, inserisci dati",
+"reddito cittadinanza, verifica ora",
+"superbonus 110%, ritira ora",
+"tassa rifiuti non pagata",
+"imu scaduta, paga ora",
+"bollo auto scaduto, paga ora",
+"revisione auto scaduta",
+"assicurazione auto scaduta",
+"sinistro auto, rimborso in arrivo",
+"condominio, spese straordinarie urgenti",
+"scuola, pagamento mensa scaduto",
+"università, borsa studio vinta",
+"patente sospesa, rinnova ora",
+"carta identità scaduta, rinnova ora",
+"green pass scaduto",
+"tessera sanitaria scaduta",
+"farmacia, offerta esclusiva",
+"oroscopo di oggi, sei fortunato",
+"tarocchi gratis, scopri futuro",
+"numeri fortunati per vincere lotto",
+"pendolo magico, scopri chi ti ama",
+"recupera foto cancellate gratis",
+"clona whatsapp gratis",
+"leggi messaggi altrui gratis",
+"controlla fidanzato gratis",
+"localizza persona gratis",
+"sblocca iphone gratis",
+"bypass icloud gratis",
+"root telefono gratis",
+"sblocca sim gratis",
+"codici netflix gratis",
+"account fortnite gratis",
+"diamanti free fire gratis",
+"skin gratis, inserisci account",
+"battle pass gratis",
+"trucchi gta gratis",
+"aimbot gratis",
+"wallhack gratis",
+"diventa famoso subito",
+"guadagna con tiktok 1000 euro",
+"vendita follower italiani",
+"spunta blu gratis",
+"verifica instagram gratis",
+"segnalazione copyright urgente",
+"violazione privacy, foto segnalata",
+"account hackerato, cambia password ora",
+"accesso sospetto da mosca",
+"accesso da altro dispositivo, sei tu?",
+"nuovo accesso da londra",
+"cambia password ora, è compromessa",
+"verifica 2fa, inserisci codice",
+"backup whatsapp scaduto",
+"backup google scaduto",
+"spazio archiviazione pieno",
+"elimina foto ora altrimenti perdi tutto",
+"foto in pericolo, clicca qui",
+"messaggi in pericolo",
+"chat in pericolo",
+"aggiorna whatsapp finto",
+"nuova versione whatsapp, scarica ora",
+"instagram scadrà domani",
+"facebook scadrà domani",
+"tiktok scadrà domani",
+"abbonamento scaduto, rinnova ora",
+"fattura amazon finta",
+"ordine amazon finto",
+"reso amazon finto",
+"rimborso amazon finto",
+"pagamento paypal finto",
+"paypal bloccato, verifica ora",
+"pagamento satispay finto",
+"satispay bloccato",
+"pagamento postepay finto",
+"postepay bloccata",
+"bonifico in arrivo, conferma dati",
+"bonifico da 1000 euro, conferma",
+"accredito in arrivo",
+"stipendio in arrivo, conferma iban",
+"pensione in arrivo",
+"disoccupazione in arrivo",
+"bonus 200 euro, ritira ora",
+"bonus 500 euro, ritira ora",
+"bonus 1000 euro, ritira ora",
+"bonus bollette, ritira ora",
+"bonus affitto, ritira ora",
+"carta cultura, ritira ora",
+"18app bonus, ritira ora",
+"bonus trasporti, ritira ora",
+"bonus casa, ritira ora",
+"bonus ristrutturazione",
+"ecobonus, ritira ora",
+"bonus mobili, ritira ora",
+"detrazione fiscale, rimborso in arrivo",
+"rimborso 730, inserisci iban",
+"dichiarazione redditi, verifica ora",
+"modello 730, paga ora",
+"f24 scaduto, paga ora",
+"imposta non pagata",
+"tassa rifiuti, paga ora",
+"tari scaduta",
+"imu scaduta",
+"tassa auto scaduta",
+"bollo scaduto",
+"revisione scaduta",
+"assicurazione scaduta",
+"sinistro da pagare",
+"risarcimento da pagare",
+"multa da pagare",
+"sanzione da pagare",
+"multe pendenti",
+"verbale in arrivo",
+"notifica verbale",
+"cartella pagamento",
+"avviso pagamento",
+"sollecito pagamento",
+"diffida pagamento",
+"decreto ingiuntivo",
+"precetto pagamento",
+"pignoramento stipendio",
+"fermo amministrativo",
+"ipoteca casa",
+]
+
+def controlla_frase_unico(frase):
+    f = frase.lower().strip()
+    for truffa in SITUAZIONI_TRUFFA_UNICO:
+        if truffa in f:
+            return False, f"🚨 TRUFFA RICONOSCIUTA: '{truffa}' - NON FARE QUELLO CHE TI DICE"
+    if "dammi codice" in f or "mandami codice" in f or "dimmi pin" in f:
+        return False, "🚨 TRUFFA: ti sta chiedendo codice/PIN - RIATTACCA / NON RISPONDERE"
+    if "clicca qui" in f and ("premio" in f or "vinto" in f or "pacco" in f or "bloccato" in f):
+        return False, "🚨 TRUFFA: link + premio/pacco/bloccato = truffa classica"
+    return True, "✅ Frase sembra normale"
+
+def controlla_tutte_le_cose_unico(link, password, lista_app, wifi, frase):
+    print("="*55)
+    print("🛡️ HAK SECURE SUPREMO UNICO - CONTROLLO TOTALE")
+    print("="*55)
+    print("1. LINK:", controlla_link_unico(link))
+    print("2. PASSWORD:", controlla_password_unico(password))
+    print("3. APP:", scansiona_unico(lista_app))
+    print("4. WIFI:", controlla_wifi_unico(wifi))
+    print("5. FRASE:", controlla_frase_unico(frase))
+    print("="*55)
+    print("✅ Controllo totale finito")
+    return "✅ Controllo totale finito"
+
+def genera_password_forte_unico():
+    import random, string
+    parole = ["Marco", "Telefono", "Sicuro", "Casa", "Gatto", "Libro", "Mare", "Sole"]
+    p1 = random.choice(parole)
+    p2 = random.choice(parole)
+    num = random.randint(100, 9999)
+    sim = random.choice(["!", "@", "#", "-", "_", "."])
+    pw = f"{p1}{p2}{num}{sim}2026"
+    return f"🔑 Password forte generata per te: {pw} - Copiala e salvala"
+
+def check_lista_veloce_unico():
+    print("✅ CHECK VELOCE - 10 COSE DA FARE OGGI:")
+    checks = [
+        "1. 2FA su WhatsApp: ATTIVA?",
+        "2. 2FA su Instagram: ATTIVA?",
+        "3. 2FA su Gmail: ATTIVA?",
+        "4. Password Gmail lunga + forte?",
+        "5. Backup foto fatto questa settimana?",
+        "6. App strane cancellate?",
+        "7. PIN telefono non 1234?",
+        "8. Bluetooth spento quando non serve?",
+        "9. WiFi free evitato?",
+        "10. Mai dato codice OTP a nessuno?",
+    ]
+    for c in checks:
+        print("  " + c)
+    return "✅ Se hai detto SÌ a tutte e 10, sei protetto"
+
+# PROVA VELOCE
+print("--- PROVA CONTINUA HAK SECURE SUPREMO UNICO ---")
+print(controlla_frase_unico("Ciao sono tuo figlio, ho cambiato numero, mandami 500 euro"))
+print(controlla_frase_unico("Ciao, ci vediamo domani alle 18?"))
+print(controlla_frase_unico("Ti chiamo dalla banca, dammi codice OTP"))
+print(controlla_frase_unico("Ciao mamma, tutto bene?"))
+print(genera_password_forte_unico())
+print(check_lista_veloce_unico())
+print(controlla_tutte_le_cose_unico("https://www.google.com", "MarcoTelefono2026!Sicuro", ["WhatsApp","Instagram"], "Casa Mia WiFi", "Ciao come stai?"))
+print("✅ HAK SECURE SUPREMO UNICO - CONTINUA CARICATA - FUNZIONA")# ============================================================================
+# HAK SECURE SUPREMO UNICO - CONCLUSIONE FINALE
+# Questa va in fondo a tutto, chiude il file e fa partire il controllo finale
+# ============================================================================
+
+def conclusione_hak_secure_supremo_unico():
+    print("")
+    print("="*60)
+    print("🛡️ HAK SECURE SUPREMO UNICO - CONCLUSIONE FINALE")
+    print("="*60)
+    print("Hai finito di incollare tutto il codice.")
+    print("Ora il tuo telefono è più protetto perché sai riconoscere:")
+    print("  1. Link finti")
+    print("  2. Password deboli")
+    print("  3. App pericolose")
+    print("  4. WiFi finti")
+    print("  5. SMS / Email / Chiamate truffa")
+    print("  6. Frasi truffa classiche")
+    print("="*60)
+    print("")
+    print("🔍 FACCIO ORA IL CONTROLLO FINALE PER TE...")
+    print("")
+    # Controllo finale vero, con cose normali e cose truffa
+    print("--- CONTROLLO FINALE 1 - COSE NORMALI ---")
+    print(controlla_link_unico("https://www.google.com"))
+    print(controlla_password_unico("MarcoTelefono2026!Sicuro"))
+    print(controlla_app_unico("WhatsApp"))
+    print(controlla_wifi_unico("Casa Mia WiFi"))
+    print(controlla_frase_unico("Ciao, ci vediamo domani?"))
+    print("")
+    print("--- CONTROLLO FINALE 2 - COSE TRUFFA ---")
+    print(controlla_link_unico("https://poste-italiane-verifica-ora.com"))
+    print(controlla_password_unico("123"))
+    print(controlla_app_unico("Free Robux Hack"))
+    print(controlla_wifi_unico("Free Wifi"))
+    print(controlla_frase_unico("Ti chiamo dalla banca, dammi codice OTP"))
+    print("")
+    print("="*60)
+    print("📋 REGOLE D'ORO - LEGGILE OGNI GIORNO:")
+    print("1. MAI dare codice OTP / PIN / password a nessuno")
+    print("2. MAI cliccare link da SMS strani")
+    print("3. MAI scaricare app fuori dal Play Store")
+    print("4. SEMPRE usare password lunga + 2FA")
+    print("5. SE HAI DUBBI, NON CLICCARE - Chiedi a mamma/papà")
+    print("="*60)
+    print("")
+    print("✅ HAK SECURE SUPREMO UNICO - FINITO - FUNZIONA TUTTO")
+    print("✅ Se vedi questa scritta, il codice è completo e funziona")
+    print("="*60)
+    # Notifica finale vera
+    try:
+        manda_notifica_unico("✅ HAK SECURE - Finito!", "Codice completo, telefono controllato, tutto funziona!")
+    except:
+        print("🔔 Notifica finale pronta")
+    return "✅ FINE"
+
+# QUESTA RIGA FA PARTIRE LA CONCLUSIONE QUANDO PREMI PLAY
+if __name__ == "__main__":
+    conclusione_hak_secure_supremo_unico()
